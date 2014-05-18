@@ -1,6 +1,9 @@
 [user]
 	name = Stuart Childs
 	email = stuart@childs.io
+[diff]
+[color]
+    ui = auto
 
 [hub]
 protocol = https
@@ -10,3 +13,15 @@ helper = /opt/boxen/bin/boxen-git-credential
 
 [core]
 excludesfile = /opt/boxen/config/git/gitignore
+
+[alias]
+    st = status
+    co = checkout
+    amend = commit --amend
+    aa = add --all
+    pom = push origin master
+
+    l = "!. ~/.githelpers && pretty_git_log"
+
+[merge]
+    tool = vimdiff
