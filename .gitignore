@@ -21,6 +21,7 @@
 /.gem
 /.ghc
 /.heroku
+/.history
 /.ipython
 /.irb-history
 /.irb_history
@@ -33,6 +34,7 @@
 /.ssl
 /.subversion
 /.viminfo
+/.zcompdump
 /Desktop
 /Documents
 /Downloads
