@@ -156,9 +156,11 @@ let g:apex_temp_folder="/Users/childss/.apex/temp"
 let g:apex_properties_folder="/Users/childss/.apex/properties"
 let g:apex_tooling_force_dot_com_path="/Users/childss/.apex/tooling-jar/tooling-force.com-0.1.4.2-getCompilerErrors-fix.jar"
 
-autocmd BufNewFile,BufRead *.cls nnoremap <buffer> <leader>at :ApexTest<CR><CR>
-autocmd BufNewFile,BufRead *.cls set ts=4 sw=4 sts=4 et
+autocmd FileType apexcode set ts=4 sw=4 sts=4 et
+autocmd FileType apexcode nnoremap <leader>at :ApexTest<CR><CR>
+autocmd FileType apexcode nnoremap <leader>ado :ApexDeployOne<CR>y<CR>
 " Contractors don't care...
+autocmd BufNewFile,BufRead *.cls nmap <buffer> <F7> mz:%!astyle --mode=java --style=java --break-blocks --pad-oper --pad-header --add-brackets --max-code-length=120 --break-after-logical<CR>`z
 autocmd BufWritePre *.cls :%s/\s\+$//e
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
