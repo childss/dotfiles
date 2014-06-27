@@ -157,7 +157,8 @@ let g:apex_properties_folder="/Users/childss/.apex/properties"
 let g:apex_tooling_force_dot_com_path="/Users/childss/.apex/tooling-jar/tooling-force.com-0.1.4.2-getCompilerErrors-fix.jar"
 
 autocmd BufNewFile,BufRead *.cls nnoremap <buffer> <leader>at :ApexTest<CR><CR>
-autocmd BufNewFile,BufRead *.cls set sw=4 sts=4 et
+autocmd BufNewFile,BufRead *.cls set ts=4 sw=4 sts=4 et
+" Contractors don't care...
 autocmd BufWritePre *.cls :%s/\s\+$//e
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
