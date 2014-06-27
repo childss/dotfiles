@@ -77,6 +77,11 @@ set nojoinspaces
 " If a file is changed outside of vim, automatically reload it without asking
 set autoread
 
+set number
+set wildignore=tmp/**,node_modules/**
+
+let g:vim_markdown_folding_disabled=1
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -91,7 +96,8 @@ augroup vimrcEx
     \ endif
 
   "for ruby, autoindent with two spaces, always expand tabs
-  autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType ruby,haml,eruby,yaml,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType html,javascript set ai sw=2 sts=2 et
   autocmd FileType python set sw=4 sts=4 et
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass 
@@ -121,13 +127,38 @@ augroup END
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :set t_Co=256 " 256 colors
+":color grb256
 :set background=dark
-:color grb256
+colorscheme solarized
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+":set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" AIRLINE CONFIG
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:airline_powerline_fonts = 1
+function! AirlineInit()
+"  let g:airline_section_a = airline#section#create(['mode',' ','branch'])
+endfunction
+autocmd VimEnter * call AirlineInit()
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-force.com
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let &runtimepath=&runtimepath . ',~/.vim/bundle/vim-force.com'
+runtime! ftdetect/vim-force.com.vim
+
+let g:apex_backup_folder="/Users/childss/.apex/backup"
+let g:apex_temp_folder="/Users/childss/.apex/temp"
+let g:apex_properties_folder="/Users/childss/.apex/properties"
+let g:apex_tooling_force_dot_com_path="/Users/childss/.apex/tooling-jar/tooling-force.com-0.1.4.2-getCompilerErrors-fix.jar"
+
+autocmd BufNewFile,BufRead *.cls nnoremap <buffer> <leader>at :ApexTest<CR><CR>
+autocmd BufNewFile,BufRead *.cls set sw=4 sts=4 et
+autocmd BufWritePre *.cls :%s/\s\+$//e
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
@@ -157,6 +188,12 @@ endfunction
 map <leader>l :w\|:silent !reload-chrome<cr>
 " Align selected lines
 vnoremap <leader>ib :!align<cr>
+" Refresh CommandT listing
+noremap <F5> :CommandTFlush<CR>
+noremap <F7> mzgg=G`z<CR>
+nmap <F8> :TagbarToggle<CR>
+
+nmap <silent> ,/ :nohlsearch<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -315,7 +352,7 @@ function! MapCR()
 endfunction
 call MapCR()
 nnoremap <leader>T :call RunNearestTest()<cr>
-nnoremap <leader>a :call RunTests('')<cr>
+autocmd Filetype ruby nnoremap <buffer> <leader>a :call RunTests('')<cr>
 nnoremap <leader>c :w\|:!script/features<cr>
 nnoremap <leader>w :w\|:!script/features --profile wip<cr>
 

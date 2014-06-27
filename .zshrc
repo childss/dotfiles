@@ -21,3 +21,9 @@ export GREP_OPTIONS="--color"
 export HISTFILE=~/.history
 export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
+
+export RUBYOPT="-rubygems"
+
+alias vim='/opt/boxen/homebrew/Cellar/vim/7.4.273/bin/vim'
+
+source /opt/boxen/env.sh

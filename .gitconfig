@@ -13,6 +13,7 @@ helper = /opt/boxen/bin/boxen-git-credential
 
 [core]
 excludesfile = /opt/boxen/config/git/gitignore
+	autocrlf = input
 
 [alias]
     st = status
@@ -20,8 +21,11 @@ excludesfile = /opt/boxen/config/git/gitignore
     amend = commit --amend
     aa = add --all
     pom = push origin master
+    ff = merge --ff-only
 
     l = "!. ~/.githelpers && pretty_git_log"
 
 [merge]
     tool = vimdiff
+[push]
+	default = simple
