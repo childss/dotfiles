@@ -163,6 +163,24 @@ autocmd FileType apexcode nnoremap <leader>ado :ApexDeployOne<CR>y<CR>
 autocmd BufNewFile,BufRead *.cls nmap <buffer> <F7> mz:%!astyle --mode=java --style=java --break-blocks --pad-oper --pad-header --add-brackets --max-code-length=120 --break-after-logical<CR>`z
 autocmd BufWritePre *.cls :%s/\s\+$//e
 
+function! ApexOpenTestAlternate()
+  let new_file = ApexAlternateForCurrentFile()
+  exec ':e ' . new_file
+endfunction
+function! ApexAlternateForCurrentFile()
+  let current_file = expand("%")
+  let new_file = current_file
+  let in_test = match(current_file, 'Test.cls$') != -1
+  let going_to_test = !in_test
+  if going_to_test
+    let new_file = substitute(new_file, '.cls$', 'Test.cls', '')
+  else
+    let new_file = substitute(new_file, 'Test.cls$', '.cls', '')
+  endif
+  return new_file
+endfunction
+autocmd FileType apexcode nnoremap <leader>. :call ApexOpenTestAlternate()<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
