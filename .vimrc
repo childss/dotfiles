@@ -157,7 +157,6 @@ let g:apex_properties_folder="/Users/childss/.apex/properties"
 let g:apex_tooling_force_dot_com_path="/Users/childss/.apex/tooling-jar/tooling-force.com-0.1.4.2-getCompilerErrors-fix.jar"
 
 autocmd FileType apexcode set ts=4 sw=4 sts=4 et
-autocmd FileType apexcode nnoremap <leader>at :ApexTest<CR><CR>
 autocmd FileType apexcode nnoremap <leader>ado :ApexDeployOne<CR>y<CR>
 " Contractors don't care...
 autocmd BufNewFile,BufRead *.cls nmap <buffer> <F7> mz:%!astyle --mode=java --style=java --break-blocks --pad-oper --pad-header --add-brackets --max-code-length=120 --break-after-logical<CR>`z
@@ -179,7 +178,51 @@ function! ApexAlternateForCurrentFile()
   endif
   return new_file
 endfunction
+function! ApexClassNameFromFile(filename)
+  let class_name = a:filename
+  let class_name = substitute(class_name, '.cls$', '', '')
+  let class_name = substitute(class_name, '^.*\/', '', '')
+  return class_name
+endfunction
 autocmd FileType apexcode nnoremap <leader>. :call ApexOpenTestAlternate()<cr>
+
+function! ApexMapCR()
+  nnoremap <cr> :call ApexRunTestFile()<cr>
+endfunction
+autocmd FileType apexcode call ApexMapCR()
+autocmd FileType apexcode nnoremap <leader>at :ApexTest<CR><CR>
+
+function! ApexRunTestFile(...)
+    if a:0
+        let command_suffix = a:1
+    else
+        let command_suffix = ""
+    endif
+
+    " Run the tests for the previously-marked file.
+    let in_test_file = match(expand("%"), 'Test.cls$') != -1
+    if in_test_file
+        call ApexSetTestFile()
+    elseif !exists("t:apex_test_file")
+        return
+    end
+    call ApexRunTests(t:apex_test_file . command_suffix)
+endfunction
+
+function! ApexSetTestFile()
+    " Set the spec file that tests will be run for.
+    let t:apex_test_file=@%
+endfunction
+
+function! ApexRunTests(filename)
+    " Write the file and run tests for the given filename
+    if expand("%") != ""
+      :w
+    end
+    let class_name = ApexClassNameFromFile(a:filename)
+    exec ":ApexTest testAndDeploy " . class_name
+endfunction
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
@@ -371,7 +414,7 @@ nnoremap <leader>. :call OpenTestAlternate()<cr>
 function! MapCR()
   nnoremap <cr> :call RunTestFile()<cr>
 endfunction
-call MapCR()
+autocmd FileType ruby call MapCR()
 nnoremap <leader>T :call RunNearestTest()<cr>
 autocmd Filetype ruby nnoremap <buffer> <leader>a :call RunTests('')<cr>
 nnoremap <leader>c :w\|:!script/features<cr>
